@@ -19,22 +19,21 @@ public class Board : MonoBehaviour
         tiles = new Dictionary<Vector3Int, TilesLogic>();
     }
 
-    void Start()
+    public IEnumerator InitSequence(LoadState loadState)
     {
-        InitSequence();
-    }
-
-    public void InitSequence()
-    {
-        LoadFloors();
+        yield return StartCoroutine(LoadFloors(loadState));
+        yield return null;
         Ordering();
+        yield return null;
     }
 
-    public void LoadFloors()
+    public IEnumerator LoadFloors(LoadState loadState)
     {
         for (int i = 0; i < floors.Count; i++)
         {
             List<Vector3Int> floorTiles = floors[i].LoadTiles();
+            yield return null;
+
             for (int j = 0; j < floorTiles.Count; j++)
             {
                 if (!tiles.ContainsKey(floorTiles[j]))
