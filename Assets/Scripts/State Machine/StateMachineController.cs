@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StateMachineController : MonoBehaviour
 {
@@ -9,6 +10,12 @@ public class StateMachineController : MonoBehaviour
     bool busy;
     public State current { get { return _current; } }
     public Transform selector;
+
+    [Header("Choose Action State")]
+    public List<Image> chooseActionButtons;
+    public Image chooseActionSelection;
+    public PanelPositioner chooseActionPanel;
+
     void Awake()
     {
         instance = this;

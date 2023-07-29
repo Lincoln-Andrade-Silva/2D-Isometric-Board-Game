@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomState : State
+public class RoamState : State
 {
     public override void Enter()
     {
         base.Enter();
-        InputController.instance.OnMove += OnMove;
+        inputs.OnMove += OnMove;
+        inputs.OnFire += OnFire;
         CheckNullPosition();
     }
 
     public override void Exit()
     {
         base.Exit();
-        InputController.instance.OnMove -= OnMove;
+        inputs.OnMove -= OnMove;
+        inputs.OnFire -= OnFire;
     }
 
     void OnMove(object sender, object args)
@@ -25,7 +27,6 @@ public class RoomState : State
         if (!(tile is null))
         {
             Selector.instance.tile = tile;
-            Selector.instance.position = tile.pos;
             Selector.instance.spriteRenderer.sortingOrder = tile.contentOrder;
             Selector.instance.transform.position = tile.worldPos;
         }
@@ -33,13 +34,27 @@ public class RoomState : State
 
     void CheckNullPosition()
     {
-        if (Selector.instance.position == null)
+        if (Selector.instance.tile == null)
         {
             TilesLogic tile = Board.instance.GetTile(new Vector3Int(0, 2, 0));
             Selector.instance.tile = tile;
-            Selector.instance.position = tile.pos;
             Selector.instance.spriteRenderer.sortingOrder = tile.contentOrder;
             Selector.instance.transform.position = tile.worldPos;
+        }
+    }
+
+    void OnFire(object sender, object args)
+    {
+        int button = (int)args;
+
+        if (button == 1)
+        {
+
+        }
+
+        if (button == 2)
+        {
+            machine.ChangeTo<ChooseActionState>();
         }
     }
 }

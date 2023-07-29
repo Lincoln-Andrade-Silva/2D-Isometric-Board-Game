@@ -14,6 +14,9 @@ public class LoadState : State
         yield return StartCoroutine(Board.instance.InitSequence(this));
 
         yield return null;
-        StateMachineController.instance.ChangeTo<RoomState>();
+        MapLoader.instance.CreateCharacters();
+        yield return null;
+
+        StateMachineController.instance.ChangeTo<ChooseActionState>();
     }
 }

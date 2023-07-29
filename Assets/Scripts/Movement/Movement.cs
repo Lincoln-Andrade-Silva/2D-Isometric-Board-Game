@@ -55,7 +55,6 @@ public class Movement : MonoBehaviour
 
     IEnumerator Walk(TilesLogic destination)
     {
-        destination.worldPos.y += 0.12f;
         int id = LeanTween.move(transform.gameObject, destination.worldPos, moveSpeed).id;
         actualTile = destination;
 
@@ -72,7 +71,6 @@ public class Movement : MonoBehaviour
 
     IEnumerator Jump(TilesLogic destination)
     {
-        destination.worldPos.y += 0.12f;
         int id1 = LeanTween.move(transform.gameObject, destination.worldPos, moveSpeed).id;
         LeanTween.moveLocalY(jumper.gameObject, jumpHeight, moveSpeed * 0.5f).setLoopPingPong(1).setEase(LeanTweenType.easeInOutQuad);
 
