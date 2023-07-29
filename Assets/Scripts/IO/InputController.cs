@@ -7,7 +7,7 @@ public delegate void DelegateModel(object sender, object args);
 public class InputController : MonoBehaviour
 {
 
-    public InputController instance;
+    public static InputController instance;
 
     float verticalColdown = 0;
     float horizontalColdown = 0;
@@ -26,7 +26,7 @@ public class InputController : MonoBehaviour
         int horizontal = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal"));
         int vertical = Mathf.RoundToInt(Input.GetAxisRaw("Vertical"));
 
-        Vector2Int moved = new Vector2Int(0, 0);
+        Vector3Int moved = new Vector3Int(0, 0, 0);
         if (horizontal != 0)
         {
             moved.x = GetMoved(ref horizontalColdown, horizontal);
@@ -42,7 +42,7 @@ public class InputController : MonoBehaviour
             verticalColdown = 0;
 
 
-        if (moved != Vector2Int.zero && OnMove != null)
+        if (moved != Vector3Int.zero && OnMove != null)
         {
             OnMove(null, moved);
         }
