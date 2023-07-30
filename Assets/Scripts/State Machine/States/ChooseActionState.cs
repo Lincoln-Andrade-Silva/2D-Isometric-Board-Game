@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChooseActionState : State
 {
     int index;
     public override void Enter()
     {
+        MoveSelector(Turn.character.tile);
         base.Enter();
         index = 0;
-        ChangeSelector();
+
+        ChangeUISelector();
+        CheckActions();
 
         inputs.OnMove += OnMove;
         inputs.OnFire += OnFire;
@@ -31,12 +35,12 @@ public class ChooseActionState : State
         if (button == Vector3Int.left)
         {
             index--;
-            ChangeSelector();
+            ChangeUISelector();
         }
         else if (button == Vector3Int.right)
         {
             index++;
-            ChangeSelector();
+            ChangeUISelector();
         }
     }
 
@@ -55,7 +59,7 @@ public class ChooseActionState : State
         }
     }
 
-    void ChangeSelector()
+    void ChangeUISelector()
     {
         int actionButtonsCount = machine.chooseActionButtons.Count;
 
@@ -78,7 +82,8 @@ public class ChooseActionState : State
         switch (index)
         {
             case 0:
-                //machine.ChangeTo<MoveTargetState>();
+                if (!Turn.hasMoved)
+                    machine.ChangeTo<MoveSelectionState>();
                 break;
             case 1:
                 //machine.ChangeTo<ActionSelectState>();
@@ -87,8 +92,23 @@ public class ChooseActionState : State
                 //machine.ChangeTo<ItemSelectState>();
                 break;
             case 3:
-                //machine.ChangeTo<WaitState>();
+                machine.ChangeTo<TurnEndState>();
                 break;
         }
+    }
+
+    void CheckActions()
+    {
+        PaintButton(machine.chooseActionButtons[0], Turn.hasMoved);
+        PaintButton(machine.chooseActionButtons[1], Turn.hasActed);
+        PaintButton(machine.chooseActionButtons[2], Turn.hasActed);
+    }
+
+    void PaintButton(Image image, bool check)
+    {
+        if (check)
+            image.color = new Color32(106, 106, 106, 230);
+        else
+            image.color = Color.white;
     }
 }

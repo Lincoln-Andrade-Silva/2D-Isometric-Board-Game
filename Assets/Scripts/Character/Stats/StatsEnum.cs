@@ -13,5 +13,5 @@ public enum StatsEnum
     MATK,
     MDEF,
     SPEED,
-    MOV
+    MOV,
 }

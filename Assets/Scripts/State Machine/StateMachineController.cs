@@ -10,6 +10,9 @@ public class StateMachineController : MonoBehaviour
     bool busy;
     public State current { get { return _current; } }
     public Transform selector;
+    public TilesLogic selectedTile;
+
+    public List<Character> characters;
 
     [Header("Choose Action State")]
     public List<Image> chooseActionButtons;

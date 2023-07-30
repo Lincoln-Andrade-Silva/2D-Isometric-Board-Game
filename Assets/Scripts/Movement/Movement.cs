@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public bool start;
     const float moveSpeed = 0.5f;
     const float jumpHeight = 0.5f;
-    public List<Vector3Int> path;
     SpriteRenderer spriteRenderer;
     Transform jumper;
     TilesLogic actualTile;
@@ -18,29 +16,14 @@ public class Movement : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    void Update()
+    public IEnumerator Move(List<TilesLogic> path)
     {
-        if (start)
+        actualTile = Turn.character.tile;
+        actualTile.content = null;
+
+        for (int i = 0; i < path.Count; i++)
         {
-            start = false;
-            StopAllCoroutines();
-            StartCoroutine(Move());
-        }
-    }
-
-    IEnumerator Move()
-    {
-        actualTile = Board.instance.GetTile(path[0]);
-        transform.position = actualTile.worldPos;
-
-        for (int i = 1; i < path.Count; i++)
-        {
-            TilesLogic destination = Board.instance.GetTile(path[i]);
-
-            if (destination is null)
-                continue;
-
-            actualTile.content = null;
+            TilesLogic destination = path[i];
 
             if (actualTile.floor != destination.floor)
             {
@@ -50,6 +33,8 @@ public class Movement : MonoBehaviour
             {
                 yield return StartCoroutine(Walk(destination));
             }
+
+            Turn.character.tile = destination;
         }
     }
 
